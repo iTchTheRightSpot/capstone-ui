@@ -18,8 +18,7 @@ Project is split into two different fronts.
 The project utilizes several third-party technologies:
 
 - Tailwind CSS.
-- Angular Material UI.
-- CKEditor5.
+- PrimeNG
 - Paystack: A payment gateway for processing online payments.
 
 ## Building Docker Image

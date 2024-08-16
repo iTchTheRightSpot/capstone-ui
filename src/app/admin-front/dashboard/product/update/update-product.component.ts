@@ -35,15 +35,12 @@ import { CategoryService } from '@/app/admin-front/dashboard/category/category.s
 import { DynamicTableComponent } from '@/app/admin-front/dashboard/util/dynamictable/dynamic-table.component';
 import { Variant } from '@/app/global-utils';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { UpdateVariantComponent } from '../product-variant/updatevariant/update-variant.component';
 import { ToastService } from '@/app/shared-comp/toast/toast.service';
 import { CreateVariantComponent } from '../product-variant/create-variant/create-variant.component';
 import { UpdateProductService } from './update-product.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { DeleteComponent } from '@/app/admin-front/dashboard/util/delete/delete.component';
-import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { CategoryHierarchyComponent } from '@/app/shared-comp/hierarchy/category-hierarchy.component';
 import { CustomUpdateVariant } from '@/app/admin-front/dashboard/product/product-variant';
 
@@ -72,10 +69,8 @@ interface CustomRowMapper {
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    CKEditorModule,
     DirectiveModule,
     DynamicTableComponent,
-    MatDialogModule,
     CategoryHierarchyComponent,
   ],
   templateUrl: './update-product.component.html',

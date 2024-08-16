@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { map, of } from 'rxjs';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { environment } from '@/environments/environment';
 
@@ -7,7 +7,8 @@ import { environment } from '@/environments/environment';
   providedIn: 'root',
 })
 export class NewProductService {
-  private readonly HOST: string | undefined = environment.domain;
+  private readonly domain = environment.domain;
+  private readonly production = environment.production;
   private readonly http = inject(HttpClient);
 
   /**
@@ -16,13 +17,13 @@ export class NewProductService {
    * @param data of type FormData
    * @return Observable of type number
    * */
-  create(data: FormData): Observable<number> {
-    const url = `${this.HOST}api/v1/worker/product`;
-    return this.http
-      .post<HttpResponse<any>>(url, data, {
-        observe: 'response',
-        withCredentials: true,
-      })
-      .pipe(map((res: HttpResponse<any>) => res.status));
-  }
+  readonly create = (data: FormData) =>
+    this.production
+      ? this.http
+          .post<HttpResponse<any>>(`${this.domain}employee/product`, data, {
+            observe: 'response',
+            withCredentials: true,
+          })
+          .pipe(map((res: HttpResponse<any>) => res.status))
+      : of(201);
 }

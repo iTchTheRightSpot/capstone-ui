@@ -20,7 +20,7 @@ import { AuthService } from './service/auth.service';
         }
 
         @case ('LOADED') {
-          <router-outlet></router-outlet>
+          <router-outlet />
         }
       }
     }
@@ -33,7 +33,7 @@ export class AppComponent {
   /**
    * onload of application, retrieve CSRF token
    * */
-  readonly csrf$ = this.authService.csrf().pipe(
+  protected readonly csrf$ = this.authService.csrf().pipe(
     map(() => ({ state: 'LOADED' })),
     startWith({ state: 'LOADING' }),
     catchError(() => of({ state: 'ERROR' })),

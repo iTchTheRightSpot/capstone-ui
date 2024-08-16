@@ -85,7 +85,7 @@
           <h4 class="capitalize">
             description <span class="text-red-500">*</span>
           </h4>
-          <ckeditor [editor]="config" formControlName="desc"></ckeditor>
+          <p-editor formControlName="desc" [style]="{ height: '320px' }" />
         </div>
       </div>
 
@@ -131,7 +131,20 @@
               class="flex outline-none border-0 text-center cursor-pointer bg-transparent"
             >
               <p *ngIf="files.length < 1">No file uploaded yet.</p>
-              <mat-icon>attach_file</mat-icon>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="size-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m18.375 12.739-7.693 7.693a4.5 4.5 0 0 1-6.364-6.364l10.94-10.94A3 3 0 1 1 19.5 7.372L8.552 18.32m.009-.01-.01.01m5.699-9.941-7.81 7.81a1.5 1.5 0 0 0 2.112 2.13"
+                />
+              </svg>
             </button>
           </div>
           <!-- End of upload -->
@@ -155,15 +168,7 @@
             <span class="text-red-500">*</span> Visibility (include in store
             front)
           </h4>
-          <mat-radio-group
-            aria-label="Select an option"
-            formControlName="visible"
-          >
-            <mat-radio-button [checked]="true" value="false"
-              >false</mat-radio-button
-            >
-            <mat-radio-button value="true">true</mat-radio-button>
-          </mat-radio-group>
+          <p-radioButton formControlName="visible" [disabled]="true" />
         </div>
 
         <div class="mb-2">
@@ -207,7 +212,7 @@
               <app-hierarchy
                 [categories]="(hierarchy$ | async) || []"
                 (emitter)="categoryClicked($event)"
-              ></app-hierarchy>
+              />
             </div>
           }
         </div>
@@ -251,9 +256,7 @@
 
         <!-- Size and Inventory -->
         <div class="pt-2.5">
-          <app-size-inventory
-            (eventEmitter)="sizeInv($event)"
-          ></app-size-inventory>
+          <app-size-inventory (eventEmitter)="sizeInv($event)" />
         </div>
       </div>
     </div>
@@ -261,13 +264,7 @@
 
   <!-- Button ctn -->
   <div class="p-2.5 px-1.5 flex justify-between">
-    <button
-      mat-stroked-button
-      color="warn"
-      [style.border-color]="'red'"
-      type="button"
-      (click)="clear()"
-    >
+    <button [style.border-color]="'red'" type="button" (click)="clear()">
       cancel
     </button>
     <button

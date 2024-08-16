@@ -1,14 +1,12 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DynamicTableComponent } from '@/app/admin-front/dashboard/util/dynamictable/dynamic-table.component';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ProductService } from '../product.service';
 import { CategoryService } from '@/app/admin-front/dashboard/category/category.service';
 import { Router, RouterLink } from '@angular/router';
 import { catchError, map, Observable, of, startWith, switchMap } from 'rxjs';
 import { Page } from '@/app/global-utils';
 import { HttpErrorResponse } from '@angular/common/http';
-import { DeleteComponent } from '@/app/admin-front/dashboard/util/delete/delete.component';
 import { mapper, ProductMapper } from '@/app/admin-front/dashboard/util/mapper';
 import {
   PageChange,
@@ -20,7 +18,7 @@ import { ToastService } from '@/app/shared-comp/toast/toast.service';
 @Component({
   selector: 'app-product-impl',
   standalone: true,
-  imports: [CommonModule, DynamicTableComponent, MatDialogModule, RouterLink],
+  imports: [CommonModule, DynamicTableComponent, RouterLink],
   template: `
     <div class="flex flex-col h-full py-0">
       <div class="px-0 py-2.5 flex items-center">
@@ -74,7 +72,7 @@ import { ToastService } from '@/app/shared-comp/toast/toast.service';
                   (pageEmitter)="pageChange($event)"
                   (eventEmitter)="infoFromTableComponent($event)"
                   [tHead]="thead"
-                ></app-dynamic-table>
+                />
               } @else {
                 no data to present
               }
@@ -90,11 +88,10 @@ export class ProductImplComponent {
   private readonly productService = inject(ProductService);
   private readonly categoryService = inject(CategoryService);
   private readonly router = inject(Router);
-  private readonly dialog = inject(MatDialog);
   private readonly toastService = inject(ToastService);
 
   // Table details
-  thead: Array<keyof ProductMapper> = [
+  protected readonly thead: Array<keyof ProductMapper> = [
     'index',
     'image',
     'name',
@@ -104,7 +101,8 @@ export class ProductImplComponent {
     'type',
     'delete',
   ];
-  data$: Observable<{
+
+  protected data$: Observable<{
     state: string;
     error?: string;
     data?: Page<ProductMapper>;
@@ -179,15 +177,16 @@ export class ProductImplComponent {
             ),
           );
 
-        this.dialog.open(DeleteComponent, {
-          width: '500px',
-          maxWidth: '100%',
-          height: 'fit-content',
-          data: {
-            name: content.data.name,
-            asyncButton: obs,
-          },
-        });
+        // todo open delete component
+        // this.dialog.open(DeleteComponent, {
+        //   width: '500px',
+        //   maxWidth: '100%',
+        //   height: 'fit-content',
+        //   data: {
+        //     name: content.data.name,
+        //     asyncButton: obs,
+        //   },
+        // });
 
         break;
       }

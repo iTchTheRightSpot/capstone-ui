@@ -20,7 +20,8 @@ interface CSRF {
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly HOST: string | undefined = environment.domain;
+  private readonly domain = environment.domain;
+  private readonly production = environment.production;
 
   private readonly http = inject(HttpClient);
   private readonly toastService = inject(ToastService);
@@ -32,15 +33,21 @@ export class AuthService {
   /**
    * Retrieve CSRF token on load of application
    * */
-  csrf = (): Observable<CSRF> =>
-    this.http.get<CSRF>(`${this.HOST}api/v1/csrf`, { withCredentials: true });
+  readonly csrf = (): Observable<CSRF> =>
+    this.production
+      ? this.http.get<CSRF>(`${this.domain}csrf`, { withCredentials: true })
+      : of<CSRF>({
+          token: 'token',
+          parameterName: 'param',
+          headerName: 'header',
+        });
 
   /**
    * Returns current user principal
    * */
-  activeUser = (url: string, route: string, bool: boolean) =>
+  protected activeUser = (url: string, route: string, bool: boolean) =>
     this.http
-      .get<AuthResponse>(`${this.HOST}${url}`, {
+      .get<AuthResponse>(`${this.domain}${url}`, {
         observe: 'response',
         responseType: 'json',
         withCredentials: true,
@@ -63,10 +70,10 @@ export class AuthService {
         }),
       );
 
-  logout = (path: string): Observable<number> =>
+  readonly logout = (path: string) =>
     this.http
       .post(
-        `${this.HOST}api/v1/logout`,
+        `${this.domain}logout`,
         {},
         { observe: 'response', withCredentials: true },
       )
@@ -75,16 +82,14 @@ export class AuthService {
         tap(() => this.router.navigate([`${path}`])),
       );
 
-  header = { 'content-type': 'application/json' };
-
-  register = (
+  readonly register = (
     obj: RegisterDTO,
     path: string,
     route?: string,
   ): Observable<number> =>
     this.http
-      .post<RegisterDTO>(`${this.HOST}${path}`, obj, {
-        headers: this.header,
+      .post<RegisterDTO>(`${this.domain}${path}`, obj, {
+        headers: { 'content-type': 'application/json' },
         observe: 'response',
         withCredentials: true,
       })
@@ -102,14 +107,14 @@ export class AuthService {
         }),
       );
 
-  login = (
+  readonly login = (
     obj: { principal: string; password: string },
     path: string,
     route: string,
   ): Observable<number> =>
     this.http
-      .post<AuthResponse>(`${this.HOST}${path}`, obj, {
-        headers: this.header,
+      .post<AuthResponse>(`${this.domain}${path}`, obj, {
+        headers: { 'content-type': 'application/json' },
         observe: 'response',
         responseType: 'json',
         withCredentials: true,

@@ -11,9 +11,6 @@ import {
 import { CategoryService } from '@/app/admin-front/dashboard/category/category.service';
 import { NewProductService } from './new-product.service';
 import { SizeInventoryComponent } from '../sizeinventory/size-inventory.component';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatRadioModule } from '@angular/material/radio';
 import { DirectiveModule } from '@/app/directive/directive.module';
 import { ProductService } from '../product.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -21,31 +18,22 @@ import { ToastService } from '@/app/shared-comp/toast/toast.service';
 import { SizeInventoryService } from '../sizeinventory/size-inventory.service';
 import { Router } from '@angular/router';
 import { SarreCurrency } from '@/app/global-utils';
-import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { CategoryHierarchyComponent } from '@/app/shared-comp/hierarchy/category-hierarchy.component';
+import { EditorModule } from 'primeng/editor';
+import { RadioButtonModule } from 'primeng/radiobutton';
 
 @Component({
   selector: 'app-new-product',
   standalone: true,
-  styles: [
-    `
-      :host ::ng-deep .ck-editor__editable_inline {
-        min-height: 100px;
-      }
-    `,
-  ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     SizeInventoryComponent,
-    CKEditorModule,
-    MatButtonModule,
-    MatIconModule,
-    MatRadioModule,
     ReactiveFormsModule,
     DirectiveModule,
+    EditorModule,
     CategoryHierarchyComponent,
+    RadioButtonModule,
   ],
   templateUrl: './new-product.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -62,7 +50,6 @@ export class NewProductComponent {
   // converts from file to string
   toString = (file: File): string => URL.createObjectURL(file);
 
-  config = ClassicEditor;
   content: string = '';
   files: File[] = []; // Images
   rows: SizeInventory[] = [];
@@ -81,9 +68,8 @@ export class NewProductComponent {
     colour: new FormControl('', Validators.required),
   });
 
-  routeToProductComponent = (): void => {
-    this.router.navigate(['/admin/dashboard/product']);
-  };
+  protected readonly routeToProductComponent = async () =>
+    await this.router.navigate(['/admin/dashboard/product']);
 
   /**
    * Responsible for verifying file uploaded is in image and then updating file FormGroup.
