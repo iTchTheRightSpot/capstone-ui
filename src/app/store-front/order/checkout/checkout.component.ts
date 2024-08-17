@@ -457,7 +457,7 @@ export class CheckoutComponent {
    * If any required field is missing, it displays a toast message
    * prompting the user to enter shipping information.
    * The address details are then formatted into a {@link WebhookMetadata}
-   * object and passed to the payment service.
+   * object and passed to the payment global-service.
    */
   onAddressEntered(): void {
     const email = this.form.controls['email'].value;

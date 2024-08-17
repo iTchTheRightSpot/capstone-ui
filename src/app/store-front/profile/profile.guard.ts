@@ -1,11 +1,7 @@
 import { inject } from '@angular/core';
-import { AuthService } from '@/app/service/auth.service';
+import { AuthenticationService } from '@/app/global-service/authentication.service';
 
 export const CLIENT_DASHBOARD_GUARD = () => {
-  const service = inject(AuthService);
-  return service.activeUser(
-    'api/v1/auth/client',
-    '/account/authentication',
-    false,
-  );
+  const service = inject(AuthenticationService);
+  return service.activeUser();
 };

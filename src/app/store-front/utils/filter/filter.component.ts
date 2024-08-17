@@ -1,18 +1,11 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-} from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { CategoryHierarchyComponent } from '@/app/shared-comp/hierarchy/category-hierarchy.component';
 import { Category } from '@/app/global-utils';
 
 @Component({
   selector: 'app-filter',
   standalone: true,
-  imports: [CommonModule, CategoryHierarchyComponent],
+  imports: [CategoryHierarchyComponent],
   styles: [
     `
       .f-fnt {

@@ -1,0 +1,3 @@
+export const ADMIN_DASHBOARD_CATEGORY_IMPL = '';
+export const ADMIN_DASHBOARD_CATEGORY_NEW = 'new';
+export const ADMIN_DASHBOARD_CATEGORY_UPDATE = ':id';

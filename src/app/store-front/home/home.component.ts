@@ -1,16 +1,16 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { concatMap, delay, from, of, repeat, startWith, switchMap } from 'rxjs';
 import { HomeService } from './home.service';
 import { CardComponent } from '../utils/card/card.component';
 import { Product } from '../store-front-utils';
 import { Router } from '@angular/router';
 import { FooterService } from '../utils/footer/footer.service';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, CardComponent],
+  imports: [CardComponent, AsyncPipe],
   styles: [
     `
       .trans {
@@ -80,7 +80,7 @@ import { FooterService } from '../utils/footer/footer.service';
               [name]="product.name"
               [currency]="currency(product.currency)"
               [price]="product.price"
-            ></app-card>
+            />
           </button>
         } @empty {
           no product(s) available.

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Angular4PaystackModule } from 'angular4-paystack';
 import { PaymentService } from './payment.service';
 import { Router } from '@angular/router';
@@ -8,7 +8,7 @@ import { CheckoutNavComponent } from '@/app/store-front/order/checkout-nav/check
 @Component({
   selector: 'app-payment',
   standalone: true,
-  imports: [CommonModule, Angular4PaystackModule, CheckoutNavComponent],
+  imports: [Angular4PaystackModule, CheckoutNavComponent, AsyncPipe],
   styleUrls: ['../order.component.css'],
   template: `
     <div class="lg-scr mg-top">

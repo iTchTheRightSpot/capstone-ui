@@ -1,12 +1,5 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  HostListener,
-  Input,
-  Output,
-} from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { NgStyle } from '@angular/common';
 import { SearchComponent } from '../search/search.component';
 import { MobileNavigationComponent } from '../mobile-navigation/mobile-navigation.component';
 import { Category, Link } from '@/app/global-utils';
@@ -16,10 +9,10 @@ import { CategoryHierarchyComponent } from '@/app/shared-comp/hierarchy/category
   selector: 'app-store-front-navigation-navigation',
   standalone: true,
   imports: [
-    CommonModule,
     SearchComponent,
     MobileNavigationComponent,
     CategoryHierarchyComponent,
+    NgStyle,
   ],
   template: `
     <nav class="w-full p-2.5 grid grid-cols-3 bg-transparent" [ngStyle]="navBg">
@@ -61,7 +54,7 @@ import { CategoryHierarchyComponent } from '@/app/shared-comp/hierarchy/category
               (toggleEmitter)="toggleNav($event)"
               (routeEmitter)="route($event)"
               (categoryEmitter)="categoryClicked($event)"
-            ></app-mobile-navigation>
+            />
           </div>
         </div>
 
@@ -117,7 +110,7 @@ import { CategoryHierarchyComponent } from '@/app/shared-comp/hierarchy/category
       <div class="my-0 mx-auto cursor-pointer">
         <button type="button" (click)="route('')">
           <img
-            src="assets/image/sara-the-brand.png"
+            [src]="logo"
             alt="logo"
             class="h-[2.5rem] w-[4.375rem] object-contain"
           />
@@ -129,7 +122,7 @@ import { CategoryHierarchyComponent } from '@/app/shared-comp/hierarchy/category
         <ul class="flex gap-2 lg:gap-8 justify-end list-none">
           <!--    Search    -->
           <li>
-            <app-search (routeEmitter)="route($event)"></app-search>
+            <app-search (routeEmitter)="route($event)" />
           </li>
 
           <!--    Shopping cart    -->
@@ -201,6 +194,8 @@ export class StoreFrontNavigationComponent {
     categoryId: number;
     name: string;
   }>();
+
+  protected readonly logo = './assets/images/logo.jpeg';
 
   links: Link[] = [
     { name: 'home', path: '/', bool: false },

@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { SarreCurrency } from '@/app/global-utils';
 import { FooterService } from './footer.service';
 import { RouterLink } from '@angular/router';
@@ -8,7 +7,7 @@ import { MobileFooterComponent } from '@/app/store-front/utils/mobilefooter/mobi
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [CommonModule, MobileFooterComponent, RouterLink],
+  imports: [MobileFooterComponent, RouterLink],
   styles: [
     `
       .f-font {
@@ -26,7 +25,7 @@ import { MobileFooterComponent } from '@/app/store-front/utils/mobilefooter/mobi
     <div class="p-3 border-t border-solid bg-[var(--app-theme)]">
       <!-- mobile -->
       <div class="w-full md:hidden">
-        <app-mobile-footer></app-mobile-footer>
+        <app-mobile-footer />
       </div>
 
       <!-- none mobile -->

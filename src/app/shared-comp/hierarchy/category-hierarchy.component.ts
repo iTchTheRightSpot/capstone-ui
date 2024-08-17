@@ -1,19 +1,9 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  signal,
-} from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, signal } from '@angular/core';
 import { Category } from '@/app/global-utils';
 
 @Component({
   selector: 'app-hierarchy',
   standalone: true,
-  imports: [CommonModule],
   styles: [
     `
       .fnt {
@@ -80,7 +70,7 @@ import { Category } from '@/app/global-utils';
             <app-hierarchy
               [categories]="category.children"
               (emitter)="onClick($event)"
-            ></app-hierarchy>
+            />
           </div>
         }
       </div>

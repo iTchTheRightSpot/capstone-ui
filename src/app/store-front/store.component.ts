@@ -1,15 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import {
-  catchError,
-  combineLatest,
-  map,
-  Observable,
-  of,
-  startWith,
-  switchMap,
-} from 'rxjs';
+import { catchError, combineLatest, map, Observable, of, startWith, switchMap } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
-import { CommonModule } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { StoreFrontNavigationComponent } from './utils/navigation/store-front-navigation.component';
 import { Router, RouterOutlet } from '@angular/router';
 import { HomeService } from './home/home.service';
@@ -22,10 +14,10 @@ import { ShopService } from './shop/shop.service';
   selector: 'app-store',
   standalone: true,
   imports: [
-    CommonModule,
     StoreFrontNavigationComponent,
     RouterOutlet,
     FooterComponent,
+    AsyncPipe,
   ],
   template: `
     @if (combine$ | async; as combine) {
@@ -56,7 +48,7 @@ import { ShopService } from './shop/shop.service';
             </div>
 
             <div class="flex-1">
-              <router-outlet></router-outlet>
+              <router-outlet />
             </div>
 
             <div class="lg-scr">

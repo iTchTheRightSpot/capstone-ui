@@ -6,7 +6,6 @@ import { map, switchMap } from 'rxjs';
 @Component({
   selector: 'app-success-payment',
   standalone: true,
-  imports: [],
   template: `
     <div class="lg-scr mg-top">
       <div class="w-fit mb-3 ml-2 border-b">

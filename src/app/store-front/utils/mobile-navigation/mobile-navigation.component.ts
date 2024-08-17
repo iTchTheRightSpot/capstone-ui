@@ -1,18 +1,11 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-} from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Category, Link } from '@/app/global-utils';
 import { CategoryHierarchyComponent } from '@/app/shared-comp/hierarchy/category-hierarchy.component';
 
 @Component({
   selector: 'app-mobile-navigation',
   standalone: true,
-  imports: [CommonModule, CategoryHierarchyComponent],
+  imports: [CategoryHierarchyComponent],
   template: `
     <div class="h-full w-full flex flex-col gap-3 bg-white">
       <div class="flex justify-between w-full p-2">
@@ -43,7 +36,7 @@ import { CategoryHierarchyComponent } from '@/app/shared-comp/hierarchy/category
             (click)="toggleNavDisplay((openNavMobile = !openNavMobile), '/')"
           >
             <img
-              src="assets/image/sara-the-brand.png"
+              [src]="logo"
               alt="logo"
               class="h-[2.5rem] w-[4.375rem] object-contain"
             />
@@ -77,58 +70,60 @@ import { CategoryHierarchyComponent } from '@/app/shared-comp/hierarchy/category
 
       <!-- Other links -->
       <ul class="flex-col list-none flex gap-3">
-        <li class="p-2.5 border-b" *ngFor="let link of links">
-          @if (link.bool) {
-            <a class="uppercase text-[var(--app-theme)]">
-              <div class="flex justify-between">
-                shop
-                <button type="button" (click)="dropDown = !dropDown">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="w-4 h-4"
-                  >
-                    @if (dropDown) {
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M5 12h14"
-                      />
-                    } @else {
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M12 4.5v15m7.5-7.5h-15"
-                      />
-                    }
-                  </svg>
-                </button>
-              </div>
-
-              @if (dropDown) {
-                <div class="w-full p-1 flex gap-2 flex-col">
-                  <app-hierarchy
-                    [categories]="hierarchy"
-                    (emitter)="categoryClicked($event)"
-                  ></app-hierarchy>
+        @for (link of links; track link.path) {
+          <li class="p-2.5 border-b">
+            @if (link.bool) {
+              <a class="uppercase text-[var(--app-theme)]">
+                <div class="flex justify-between">
+                  shop
+                  <button type="button" (click)="dropDown = !dropDown">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      class="w-4 h-4"
+                    >
+                      @if (dropDown) {
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M5 12h14"
+                        />
+                      } @else {
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M12 4.5v15m7.5-7.5h-15"
+                        />
+                      }
+                    </svg>
+                  </button>
                 </div>
-              }
-            </a>
-          } @else {
-            <button
-              type="button"
-              (click)="
+
+                @if (dropDown) {
+                  <div class="w-full p-1 flex gap-2 flex-col">
+                    <app-hierarchy
+                      [categories]="hierarchy"
+                      (emitter)="categoryClicked($event)"
+                    />
+                  </div>
+                }
+              </a>
+            } @else {
+              <button
+                type="button"
+                (click)="
                 toggleNavDisplay((openNavMobile = !openNavMobile), link.path)
               "
-              class="w-full flex uppercase text-[var(--app-theme)]"
-            >
-              {{ link.name }}
-            </button>
-          }
-        </li>
+                class="w-full flex uppercase text-[var(--app-theme)]"
+              >
+                {{ link.name }}
+              </button>
+            }
+          </li>
+        }
       </ul>
     </div>
   `,
@@ -147,6 +142,7 @@ export class MobileNavigationComponent {
   }>();
 
   dropDown = false;
+  protected readonly logo = './assets/images/logo.jpeg';
 
   toggleNavDisplay(bool: boolean, path?: string): void {
     this.toggleEmitter.emit(bool);

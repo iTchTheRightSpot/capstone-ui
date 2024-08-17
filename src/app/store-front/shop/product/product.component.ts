@@ -10,17 +10,16 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import { CartService } from '@/app/store-front/order/cart/cart.service';
-import { DirectiveModule } from '@/app/directive/directive.module';
 import { FooterService } from '@/app/store-front/utils/footer/footer.service';
 import { ShopService } from '@/app/store-front/shop/shop.service';
-import { ToastService } from '@/app/shared-comp/toast/toast.service';
+import { ToastService } from '@/app/global-service/toast.service';
 
 @Component({
   selector: 'app-product',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink, DirectiveModule],
+  imports: [ReactiveFormsModule, RouterLink, AsyncPipe],
   styles: [
     `
       .show {

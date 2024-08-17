@@ -13,13 +13,6 @@ export const PROFILE_ROUTES: Routes = [
     canActivateChild: [CLIENT_DASHBOARD_GUARD],
   },
   {
-    path: 'authentication',
-    loadComponent: () =>
-      import('./auth/store-front-auth.component').then(
-        (m) => m.StoreFrontAuthComponent,
-      ),
-  },
-  {
     path: '',
     redirectTo: '',
     pathMatch: 'full',

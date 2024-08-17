@@ -5,7 +5,7 @@ import { RouterOutlet } from '@angular/router';
   selector: 'app-pages',
   standalone: true,
   imports: [RouterOutlet],
-  template: `<router-outlet></router-outlet>`,
+  template: `<router-outlet />`,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PagesComponent {}

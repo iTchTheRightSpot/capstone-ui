@@ -1,14 +1,13 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { AuthService } from '@/app/service/auth.service';
-import { DirectiveModule } from '@/app/directive/directive.module';
+import { AuthenticationService } from '@/app/global-service/authentication.service';
 import { CardComponent } from '@/app/store-front/utils/card/card.component';
 import { AccountService } from '@/app/store-front/profile/dashboard/account.service';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-overview',
   standalone: true,
-  imports: [CommonModule, DirectiveModule, CardComponent],
+  imports: [CardComponent, AsyncPipe],
   styles: [
     `
       @media (max-width: 768px) {
@@ -55,11 +54,7 @@ import { AccountService } from '@/app/store-front/profile/dashboard/account.serv
               class="p-2 gap-3 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
             >
               @for (o of obj.detail; track o.url) {
-                <app-card
-                  [url]="o.url"
-                  [name]="o.name"
-                  [bool]="false"
-                ></app-card>
+                <app-card [url]="o.url" [name]="o.name" [bool]="false" />
               }
             </div>
           }
@@ -73,7 +68,7 @@ import { AccountService } from '@/app/store-front/profile/dashboard/account.serv
         >
           <h1 class="w-fit capitalize text-sm md:text-base">account details</h1>
           <button
-            [asyncButton]="logout$"
+            (click)="(logout$)"
             type="button"
             class="w-fit capitalize text-blue-300 text-sm md:text-base"
           >
@@ -106,7 +101,7 @@ import { AccountService } from '@/app/store-front/profile/dashboard/account.serv
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OverviewComponent {
-  private readonly authService = inject(AuthService);
+  private readonly authService = inject(AuthenticationService);
   private readonly accountService = inject(AccountService);
 
   readonly principal$ = this.authService.principal$;

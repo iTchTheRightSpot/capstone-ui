@@ -1,20 +1,11 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  inject,
-  Input,
-  Output,
-  Renderer2,
-} from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, EventEmitter, inject, Input, Output, Renderer2 } from '@angular/core';
 import { RouterLinkActive } from '@angular/router';
-import { UtilService } from '@/app/service/util.service';
+import { UtilService } from '@/app/global-service/util.service';
 
 @Component({
   selector: 'app-paginator',
   standalone: true,
-  imports: [CommonModule, RouterLinkActive],
+  imports: [RouterLinkActive],
   styles: [
     `
       /* width */
@@ -45,18 +36,19 @@ import { UtilService } from '@/app/service/util.service';
         <ul class="list-style-none flex justify-center">
           <li class="flex gap-2 cursor-pointer">
             <!-- rgb(148 163 184) -->
-            <a
-              *ngFor="let num of range(); let i = index"
-              (click)="onGoTo(num)"
-              [attr.data-page-number]="num"
-              aria-label="button number"
-              [style]="{
+            @for (num of range(); track num; let i = $index) {
+              <a
+                (click)="onGoTo(num)"
+                [attr.data-page-number]="num"
+                aria-label="button number"
+                [style]="{
                 'background-color':
                   num === currentPage ? 'var(--app-theme)' : ''
               }"
-              class="relative block rounded-full bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-gray-200"
+                class="relative block rounded-full bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-gray-200"
               >{{ num + 1 }}</a
-            >
+              >
+            }
           </li>
         </ul>
       } @else {
