@@ -1,10 +1,4 @@
-import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import {
-  MAT_DIALOG_DATA,
-  MatDialogModule,
-  MatDialogRef,
-} from '@angular/material/dialog';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -13,27 +7,20 @@ import {
   Validators,
 } from '@angular/forms';
 import { SettingService } from '../setting.service';
-import { ShipSettingMapper } from '../setting.util';
-import { catchError, Observable, of } from 'rxjs';
-import { DirectiveModule } from '@/app/directive/directive.module';
-import { HttpErrorResponse } from '@angular/common/http';
-import { ToastService } from '@/app/shared-comp/toast/toast.service';
+import { of } from 'rxjs';
+import { ToastService } from '@/app/global-service/toast.service';
 
 @Component({
   selector: 'app-update-shipping',
   standalone: true,
-  imports: [
-    CommonModule,
-    MatDialogModule,
-    ReactiveFormsModule,
-    DirectiveModule,
-  ],
+  imports: [ReactiveFormsModule],
   template: `
     <div class="w-full p-2 flex justify-center">
       <h1
         class="cx-font-size w-fit capitalize border-b border-b-[var(--app-theme)]"
       >
-        editing {{ data.country }}
+        <!--        editing {{ data.country }}-->
+        editing country
       </h1>
     </div>
 
@@ -99,7 +86,7 @@ import { ToastService } from '@/app/shared-comp/toast/toast.service';
               ? 'var(--app-theme-hover)'
               : 'var(--app-theme)'
           }"
-          [asyncButton]="update()"
+          (click)="update()"
         >
           update
         </button>
@@ -112,47 +99,51 @@ export class UpdateShippingComponent {
   readonly form: FormGroup;
 
   constructor(
-    private readonly service: SettingService,
-    private readonly toast: ToastService,
+    private readonly settingService: SettingService,
+    private readonly toastService: ToastService,
     private readonly fb: FormBuilder,
-    private dialogRef: MatDialogRef<UpdateShippingComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: ShipSettingMapper,
+    // private dialogRef: MatDialogRef<UpdateShippingComponent>,
+    // @Inject(MAT_DIALOG_DATA) public data: ShipSettingMapper,
   ) {
     this.form = this.fb.group({
-      country: new FormControl(data.country, [
+      country: new FormControl('country', [
         Validators.required,
         Validators.max(57),
       ]),
-      usd: new FormControl(data.usd_price, Validators.required),
-      ngn: new FormControl(data.ngn_price, Validators.required),
+      usd: new FormControl(9.99, Validators.required),
+      ngn: new FormControl(9.99, Validators.required),
     });
+    // this.form = this.fb.group({
+    //   country: new FormControl(data.country, [
+    //     Validators.required,
+    //     Validators.max(57),
+    //   ]),
+    //   usd: new FormControl(data.usd_price, Validators.required),
+    //   ngn: new FormControl(data.ngn_price, Validators.required),
+    // });
   }
 
-  /**
-   * Closes modal
-   * */
-  cancel(): void {
-    this.dialogRef.close();
-  }
+  protected readonly cancel = () => console.log('cancel clicked');
 
-  update(): Observable<number> {
+  protected readonly update = () => {
     const country = this.form.controls['country'].value;
     const usd = this.form.controls['usd'].value;
     const ngn = this.form.controls['ngn'].value;
     return !country || !usd || !ngn
       ? of()
-      : this.service
+      : this.settingService
           .update({
-            shipping_id: this.data.shipping_id,
+            shipping_id: 1,
             country: country,
             ngn_price: ngn,
             usd_price: usd,
           })
-          .pipe(
-            catchError((e: HttpErrorResponse) => {
-              this.toast.toastMessage(e.error ? e.error.message : e.message);
-              return of(e.status);
-            }),
-          );
-  }
+          .pipe
+          // TODO handle error appropriately
+          // catchError((e: HttpErrorResponse) => {
+          //   this.toastService.toastMessage(e.error ? e.error.message : e.message);
+          //   return this.toastService.(e.status);
+          // }),
+          ();
+  };
 }

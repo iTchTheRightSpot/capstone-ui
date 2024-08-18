@@ -1,5 +1,13 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { catchError, combineLatest, map, Observable, of, startWith, switchMap } from 'rxjs';
+import {
+  catchError,
+  combineLatest,
+  map,
+  Observable,
+  of,
+  startWith,
+  switchMap,
+} from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AsyncPipe } from '@angular/common';
 import { StoreFrontNavigationComponent } from './utils/navigation/store-front-navigation.component';

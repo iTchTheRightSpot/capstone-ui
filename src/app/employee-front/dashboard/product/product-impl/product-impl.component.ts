@@ -6,8 +6,15 @@ import { Router, RouterLink } from '@angular/router';
 import { catchError, map, Observable, of, startWith, switchMap } from 'rxjs';
 import { Page } from '@/app/global-utils';
 import { HttpErrorResponse } from '@angular/common/http';
-import { mapper, ProductMapper } from '@/app/employee-front/dashboard/util/mapper';
-import { PageChange, ProductResponse, TableContent } from '@/app/employee-front/admin-front.util';
+import {
+  mapper,
+  ProductMapper,
+} from '@/app/employee-front/dashboard/util/mapper';
+import {
+  PageChange,
+  ProductResponse,
+  TableContent,
+} from '@/app/employee-front/admin-front.util';
 import { AsyncPipe } from '@angular/common';
 import { ToastService } from '@/app/global-service/toast.service';
 

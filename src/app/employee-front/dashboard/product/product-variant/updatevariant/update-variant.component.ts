@@ -1,5 +1,16 @@
-import { ChangeDetectionStrategy, Component, inject, Inject } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  Inject,
+} from '@angular/core';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { catchError, Observable, of, switchMap, tap } from 'rxjs';
 import { VariantService } from '../variant.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -11,9 +22,7 @@ import { ToastService } from '@/app/global-service/toast.service';
 @Component({
   selector: 'app-update-variant',
   standalone: true,
-  imports: [
-    ReactiveFormsModule,
-  ],
+  imports: [ReactiveFormsModule],
   template: `
     <div class="w-full p-2 flex justify-center">
       <h1
@@ -62,17 +71,17 @@ import { ToastService } from '@/app/global-service/toast.service';
           <span [style]="'color: red'">*</span>
         </h4>
         radio
-<!--        <mat-radio-group-->
-<!--          aria-label="Select an option"-->
-<!--          formControlName="visible"-->
-<!--        >-->
-<!--          <mat-radio-button [value]="false" [checked]="!data.variant.is_visible"-->
-<!--            >false</mat-radio-button-->
-<!--          >-->
-<!--          <mat-radio-button [value]="true" [checked]="data.variant.is_visible"-->
-<!--            >true</mat-radio-button-->
-<!--          >-->
-<!--        </mat-radio-group>-->
+        <!--        <mat-radio-group-->
+        <!--          aria-label="Select an option"-->
+        <!--          formControlName="visible"-->
+        <!--        >-->
+        <!--          <mat-radio-button [value]="false" [checked]="!data.variant.is_visible"-->
+        <!--            >false</mat-radio-button-->
+        <!--          >-->
+        <!--          <mat-radio-button [value]="true" [checked]="data.variant.is_visible"-->
+        <!--            >true</mat-radio-button-->
+        <!--          >-->
+        <!--        </mat-radio-group>-->
       </div>
 
       <!-- QTY -->
@@ -141,29 +150,33 @@ export class UpdateVariantComponent {
 
   readonly form: FormGroup;
 
-  constructor(
-    private dialogRef: MatDialogRef<UpdateVariantComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: CustomUpdateVariant,
-  ) {
+  constructor() { // @Inject(MAT_DIALOG_DATA) public data: CustomUpdateVariant, // private dialogRef: MatDialogRef<UpdateVariantComponent>,
     this.form = this.fb.group({
-      sku: new FormControl({ value: this.data.variant.sku, disabled: true }, [
+      sku: new FormControl({ value: 'sku', disabled: true }, [
         Validators.required,
       ]),
-      colour: new FormControl(this.data.variant.colour, [Validators.required]),
-      visible: new FormControl(this.data.variant.is_visible, [
-        Validators.required,
-      ]),
-      qty: new FormControl(this.data.variant.qty, Validators.required),
-      size: new FormControl(this.data.variant.size, [Validators.required]),
+      colour: new FormControl('colour', [Validators.required]),
+      visible: new FormControl(true, [Validators.required]),
+      qty: new FormControl(1, Validators.required),
+      size: new FormControl('medium', [Validators.required]),
     });
+    // this.form = this.fb.group({
+    //   sku: new FormControl({ value: this.data.variant.sku, disabled: true }, [
+    //     Validators.required,
+    //   ]),
+    //   colour: new FormControl(this.data.variant.colour, [Validators.required]),
+    //   visible: new FormControl(this.data.variant.is_visible, [
+    //     Validators.required,
+    //   ]),
+    //   qty: new FormControl(this.data.variant.qty, Validators.required),
+    //   size: new FormControl(this.data.variant.size, [Validators.required]),
+    // });
   }
 
   /**
    * Closes modal
    * */
-  onNoClick(): void {
-    this.dialogRef.close({ arr: [] });
-  }
+  onNoClick(): void {}
 
   /**
    * Update ProductVariant
@@ -186,23 +199,26 @@ export class UpdateVariantComponent {
     return this.updateVariantService.updateVariant(payload).pipe(
       switchMap((status: number) => {
         // refresh variants table and close the modal
-        return this.updateProductService
-          .productDetailsByProductUuid(this.data.productId)
-          .pipe(
-            tap((arr: ProductDetailResponse[]) =>
-              this.dialogRef.close({ arr: arr }),
-            ),
-            switchMap(() => of(status)),
-            catchError((e: HttpErrorResponse) => {
-              this.toastService.toastMessage(
-                e.error ? e.error.message : e.message,
-              );
-              return of(e.status);
-            }),
-          );
+        return (
+          this.updateProductService
+            // .productDetailsByProductUuid(this.data.productId)
+            .productDetailsByProductUuid('product-id')
+            .pipe(
+              // tap((arr: ProductDetailResponse[]) =>
+              //   this.dialogRef.close({ arr: arr }),
+              // ),
+              switchMap(() => of(status)),
+              catchError((e: HttpErrorResponse) => {
+                // this.toastService.toastMessage(
+                //   e.error ? e.error.message : e.message,
+                // );
+                return of(e.status);
+              }),
+            )
+        );
       }),
       catchError((e: HttpErrorResponse) => {
-        this.toastService.toastMessage(e.error ? e.error.message : e.message);
+        // this.toastService.toastMessage(e.error ? e.error.message : e.message);
         return of(e.status);
       }),
     );

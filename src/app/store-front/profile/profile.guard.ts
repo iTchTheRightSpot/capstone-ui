@@ -3,5 +3,5 @@ import { AuthenticationService } from '@/app/global-service/authentication.servi
 
 export const CLIENT_DASHBOARD_GUARD = () => {
   const service = inject(AuthenticationService);
-  return service.activeUser();
+  return service.activeUser$();
 };

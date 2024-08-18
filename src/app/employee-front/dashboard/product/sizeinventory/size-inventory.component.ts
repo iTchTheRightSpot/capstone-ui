@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Inject, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Inject,
+  Output,
+} from '@angular/core';
 import { AsyncPipe, DOCUMENT, NgStyle } from '@angular/common';
 import { SizeInventory } from '@/app/employee-front/admin-front.util';
 import { CustomQueue } from './custom-queue';
@@ -10,10 +16,7 @@ import { IS_NUMERIC } from '@/app/global-utils';
 @Component({
   selector: 'app-size-inventory',
   standalone: true,
-  imports: [
-    AsyncPipe,
-    NgStyle,
-  ],
+  imports: [AsyncPipe, NgStyle],
   template: `
     <div class="flex gap-1.5 mb-2 justify-between">
       <h4 class="cx-font-size capitalize">
@@ -43,18 +46,18 @@ import { IS_NUMERIC } from '@/app/global-utils';
 
     @if (queue.queue$ | async; as bool) {
       <div [style]="{ display: bool ? 'block' : 'none' }">
-        @for (row of queue.toArray(); let i = $index; track i; ) {
-          <div class="mb-1.5" >
+        @for (row of queue.toArray(); let i = $index; track i) {
+          <div class="mb-1.5">
             <div class="dom block">
               <!-- Error message -->
               <p
                 class="m-0 hidden"
                 [ngStyle]="{
-                display:
-                  invalidInputImpl() && i === indexOfError ? 'block' : 'none',
-                color: 'red',
-                'font-size': '10px'
-              }"
+                  display:
+                    invalidInputImpl() && i === indexOfError ? 'block' : 'none',
+                  color: 'red',
+                  'font-size': '10px'
+                }"
               >
                 Please enter correctly
               </p>

@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 import { CategoryHierarchyComponent } from '@/app/shared-comp/hierarchy/category-hierarchy.component';
 import { Category } from '@/app/global-utils';
 

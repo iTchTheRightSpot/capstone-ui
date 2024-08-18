@@ -4,7 +4,7 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import {
   FormControl,
   FormGroup,
@@ -12,24 +12,16 @@ import {
   Validators,
 } from '@angular/forms';
 import { catchError, Observable, of, switchMap } from 'rxjs';
-import { MatRadioModule } from '@angular/material/radio';
-import { DirectiveModule } from '@/app/directive/directive.module';
 import { CategoryService } from '../category.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ToastService } from '@/app/shared-comp/toast/toast.service';
 import { Router } from '@angular/router';
 import { CategoryHierarchyComponent } from '@/app/shared-comp/hierarchy/category-hierarchy.component';
+import { ToastService } from '@/app/global-service/toast.service';
 
 @Component({
   selector: 'app-new-category',
   standalone: true,
-  imports: [
-    CommonModule,
-    MatRadioModule,
-    ReactiveFormsModule,
-    DirectiveModule,
-    CategoryHierarchyComponent,
-  ],
+  imports: [ReactiveFormsModule, CategoryHierarchyComponent, AsyncPipe],
   template: `
     <form class="h-full flex flex-col py-0 px-2.5" [formGroup]="form">
       <!-- Title -->
@@ -121,7 +113,7 @@ import { CategoryHierarchyComponent } from '@/app/shared-comp/hierarchy/category
                         <app-hierarchy
                           [categories]="hierarchy"
                           (emitter)="parentClicked($event)"
-                        ></app-hierarchy>
+                        />
                       </div>
                     }
                   }
@@ -145,15 +137,7 @@ import { CategoryHierarchyComponent } from '@/app/shared-comp/hierarchy/category
                   <span [style]="'color: red'">*</span>
                   Visibility (include in store front)
                 </h4>
-                <mat-radio-group
-                  aria-label="Select an option"
-                  formControlName="visible"
-                >
-                  <mat-radio-button [checked]="true" value="false"
-                    >false</mat-radio-button
-                  >
-                  <mat-radio-button value="true">true</mat-radio-button>
-                </mat-radio-group>
+                todo radio
               </div>
             </div>
           </div>
@@ -171,7 +155,7 @@ import { CategoryHierarchyComponent } from '@/app/shared-comp/hierarchy/category
         </button>
         <button
           [disabled]="!form.valid"
-          [asyncButton]="submit()"
+          (click)="submit()"
           type="submit"
           [style]="{
             'background-color': form.valid
@@ -251,9 +235,9 @@ export class NewCategoryComponent {
                 .pipe(switchMap(() => of(status)));
             }),
             catchError((err: HttpErrorResponse) => {
-              this.toastService.toastMessage(
-                err.error ? err.error.message : err.message,
-              );
+              // this.toastService.toastMessage(
+              //   err.error ? err.error.message : err.message,
+              // );
               return of(err.status);
             }),
           );

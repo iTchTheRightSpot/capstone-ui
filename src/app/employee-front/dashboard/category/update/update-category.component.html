@@ -98,28 +98,12 @@
             visibility (include in store front)
             <span [style]="'color: red'">*</span>
           </h4>
-          <mat-radio-group
-            aria-label="Select an option"
-            formControlName="visible"
-          >
-            <mat-radio-button [value]="false" [checked]="!data.visible"
-              >false</mat-radio-button
-            >
-            <mat-radio-button [value]="true" [checked]="data.visible"
-              >true</mat-radio-button
-            >
-          </mat-radio-group>
+          to implement radio
         </div>
 
         <!-- Button container -->
         <div class="p-2.5 px-1.5 flex justify-between">
-          <button
-            mat-stroked-button
-            color="warn"
-            [style.border-color]="'red'"
-            type="button"
-            (click)="clear()"
-          >
+          <button [style.border-color]="'red'" type="button" (click)="clear()">
             Cancel
           </button>
           <button
@@ -131,7 +115,7 @@
                 ? 'var(--app-theme-hover)'
                 : 'var(--app-theme)'
             }"
-            [asyncButton]="update()"
+            (click)="update()"
           >
             update
           </button>
@@ -171,7 +155,7 @@
                   [tHead]="thead"
                   (eventEmitter)="eventEmitter($event)"
                   (pageEmitter)="pageChange($event)"
-                ></app-dynamic-table>
+                />
               }
             }
           }

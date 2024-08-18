@@ -12,8 +12,8 @@ import {
   tap,
 } from 'rxjs';
 import { PaymentDetail, WebhookMetadata } from '../index';
-import { ToastService } from '@/app/shared-comp/toast/toast.service';
 import { Router } from '@angular/router';
+import { ToastService } from '@/app/global-service/toast.service';
 
 @Injectable({
   providedIn: 'root',
@@ -38,7 +38,7 @@ export class PaymentService {
 
   setAddress = (dto: WebhookMetadata): void => this.addressSubject.next(dto);
 
-  toast = (message: string): void => this.toastService.toastMessage(message);
+  toast = (message: string): void => {};
 
   /**
    * Api call to server to prevent overselling before displaying page

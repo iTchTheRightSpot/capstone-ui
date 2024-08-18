@@ -1,6 +1,21 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, inject, Output, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  inject,
+  Output,
+  signal,
+} from '@angular/core';
 import { SearchService } from './search.service';
-import { catchError, debounceTime, distinctUntilChanged, map, of, switchMap, tap } from 'rxjs';
+import {
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  of,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { FooterService } from '@/app/store-front/utils/footer/footer.service';
 import { CardComponent } from '@/app/store-front/utils/card/card.component';
 import { SarreCurrency } from '@/app/global-utils';

@@ -4,18 +4,18 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { SettingService } from '../setting.service';
 import { catchError, map, of, startWith, Subject, switchMap } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ToastService } from '@/app/shared-comp/toast/toast.service';
 import { IS_NUMERIC } from '@/app/global-utils';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { ToastService } from '@/app/global-service/toast.service';
 
 @Component({
   selector: 'app-tax',
   standalone: true,
-  imports: [CommonModule],
+  imports: [AsyncPipe],
   template: `
     <div class="flex flex-col h-full py-0">
       <div class="flex py-2.5 px-0 align-center">
@@ -133,12 +133,9 @@ export class TaxComponent {
             .pipe(
               map(() => false),
               startWith(true),
-              catchError((e: HttpErrorResponse) => {
-                this.toastService.toastMessage(
-                  e.error ? e.error.message : e.message,
-                );
-                return of(false);
-              }),
+              catchError((e: HttpErrorResponse) =>
+                this.toastService.messageErrorBool(e),
+              ),
             ),
     ),
   );

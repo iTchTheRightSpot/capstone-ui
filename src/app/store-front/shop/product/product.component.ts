@@ -10,7 +10,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { AsyncPipe, CommonModule } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { CartService } from '@/app/store-front/order/cart/cart.service';
 import { FooterService } from '@/app/store-front/utils/footer/footer.service';
 import { ShopService } from '@/app/store-front/shop/shop.service';
@@ -191,9 +191,9 @@ export class ProductComponent {
       ? of(0)
       : this.cartService.createCart({ sku: this.sku, qty: 1 }).pipe(
           catchError((err: HttpErrorResponse) => {
-            this.toastService.toastMessage(
-              err.error ? err.error.message : err.message,
-            );
+            // this.toastService.toastMessage(
+            //   err.error ? err.error.message : err.message,
+            // );
             return of(err.status);
           }),
         );

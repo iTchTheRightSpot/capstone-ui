@@ -1,9 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Inject,
-  inject,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
@@ -11,41 +6,21 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatRadioModule } from '@angular/material/radio';
 import { SizeInventoryComponent } from '@/app/employee-front/dashboard/product/sizeinventory/size-inventory.component';
 import {
   ProductDetailResponse,
   SizeInventory,
 } from '@/app/employee-front/admin-front.util';
-import { DirectiveModule } from '@/app/directive/directive.module';
-import { catchError, Observable, of, switchMap, tap } from 'rxjs';
-import { ToastService } from '@/app/shared-comp/toast/toast.service';
-import {
-  MAT_DIALOG_DATA,
-  MatDialogModule,
-  MatDialogRef,
-} from '@angular/material/dialog';
-import { HttpErrorResponse } from '@angular/common/http';
+import { Observable, of, switchMap } from 'rxjs';
 import { UpdateProductService } from '@/app/employee-front/dashboard/product/update/update-product.service';
 import { SizeInventoryService } from '@/app/employee-front/dashboard/product/sizeinventory/size-inventory.service';
 import { VariantService } from '../variant.service';
-import { ProductVariant } from '../index';
+import { ToastService } from '@/app/global-service/toast.service';
 
 @Component({
   selector: 'app-create-variant',
   standalone: true,
-  imports: [
-    CommonModule,
-    MatDialogModule,
-    MatButtonModule,
-    MatIconModule,
-    MatRadioModule,
-    ReactiveFormsModule,
-    SizeInventoryComponent,
-    DirectiveModule,
-  ],
+  imports: [CommonModule, ReactiveFormsModule, SizeInventoryComponent],
   templateUrl: './create-variant.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -63,26 +38,26 @@ export class CreateVariantComponent {
   // Converts file to image strings
   toString = (file: File): string => URL.createObjectURL(file);
 
-  reactiveForm = this.fb.group({
+  protected readonly reactiveForm = this.fb.group({
     visible: new FormControl(true, Validators.required),
     colour: new FormControl('', Validators.required),
   });
 
-  constructor(
-    private dialogRef: MatDialogRef<CreateVariantComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: ProductVariant,
-  ) {}
+  // constructor(
+  //   private dialogRef: MatDialogRef<CreateVariantComponent>,
+  //   @Inject(MAT_DIALOG_DATA) public data: ProductVariant,
+  // ) {}
 
   /**
    * Allows for removing dummy inputs if colour exists
    * */
   oninputChange(event: KeyboardEvent): void {
     const input: string = (event.target as HTMLInputElement).value;
-    const find = this.data.colours.find((c) => c === input);
-    if (find) {
-      this.colourExists = false;
-      this.files = [];
-    }
+    // const find = this.data.colours.find((c) => c === input);
+    // if (find) {
+    //   this.colourExists = false;
+    //   this.files = [];
+    // }
   }
 
   /**
@@ -114,9 +89,7 @@ export class CreateVariantComponent {
     }
   }
 
-  cancel(): void {
-    this.dialogRef.close();
-  }
+  cancel(): void {}
 
   /** Clears reactiveForm */
   clear(): void {
@@ -132,8 +105,15 @@ export class CreateVariantComponent {
   create(): Observable<number> {
     const formData = new FormData();
 
+    // const payload = {
+    //   product_id: this.data.id,
+    //   visible: this.reactiveForm.controls['visible'].value,
+    //   colour: this.reactiveForm.controls['colour'].value,
+    //   sizeInventory: this.rows,
+    // };
+
     const payload = {
-      product_id: this.data.id,
+      product_id: -1,
       visible: this.reactiveForm.controls['visible'].value,
       colour: this.reactiveForm.controls['colour'].value,
       sizeInventory: this.rows,
@@ -149,21 +129,23 @@ export class CreateVariantComponent {
 
     return this.variantService.create(formData).pipe(
       switchMap((status: number) => {
-        return this.updateProductService
-          .productDetailsByProductUuid(this.data.id)
-          .pipe(
-            switchMap((arr: ProductDetailResponse[]) => {
-              this.dialogRef.close({ arr: arr });
-              this.sizeInventoryService.setSubject(true);
-              return of(status);
-            }),
-            tap(() => this.toastService.toastMessage('Created!')),
-          );
+        return (
+          this.updateProductService
+            // .productDetailsByProductUuid(this.data.id)
+            .productDetailsByProductUuid('-1')
+            .pipe(
+              switchMap((arr: ProductDetailResponse[]) => {
+                this.sizeInventoryService.setSubject(true);
+                return of(status);
+              }),
+              // tap(() => this.toastService.toastMessage('Created!')),
+            )
+        );
       }),
-      catchError((err: HttpErrorResponse) => {
-        this.toastService.toastMessage(err.error.message);
-        return of(err.status);
-      }),
+      // catchError((err: HttpErrorResponse) => {
+      //   this.toastService.toastMessage(err.error.message);
+      //   return of(err.status);
+      // }),
     );
   }
 }

@@ -1,6 +1,21 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { catchError, combineLatest, map, Observable, of, ReplaySubject, startWith, switchMap, tap } from 'rxjs';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+} from '@angular/core';
+import { AsyncPipe, CommonModule } from '@angular/common';
+import {
+  catchError,
+  combineLatest,
+  map,
+  Observable,
+  of,
+  ReplaySubject,
+  startWith,
+  switchMap,
+  tap,
+} from 'rxjs';
 import {
   ProductDetailResponse,
   ProductResponse,
@@ -9,7 +24,12 @@ import {
 } from '@/app/employee-front/admin-front.util';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ProductService } from '../product.service';
-import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { CategoryService } from '@/app/employee-front/dashboard/category/category.service';
 import { DynamicTableComponent } from '@/app/employee-front/dashboard/util/dynamictable/dynamic-table.component';
 import { Variant } from '@/app/global-utils';
@@ -36,10 +56,10 @@ interface CustomRowMapper {
   selector: 'app-update-product',
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     DynamicTableComponent,
     CategoryHierarchyComponent,
+    AsyncPipe,
   ],
   templateUrl: './update-product.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -267,7 +287,9 @@ export class UpdateProductComponent implements OnInit {
           ? combineLatest([products$, categories$]).pipe(switchMap(() => res))
           : products$.pipe(switchMap(() => res));
       }),
-      catchError((err: HttpErrorResponse) => this.toastService.messageErrorNothing(err)),
+      catchError((err: HttpErrorResponse) =>
+        this.toastService.messageErrorNothing(err),
+      ),
     );
   }
 

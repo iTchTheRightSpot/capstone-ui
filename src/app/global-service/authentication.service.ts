@@ -47,7 +47,7 @@ export class AuthenticationService {
   /**
    * Retrieve CSRF token on load of application
    * */
-  readonly csrf = (): Observable<CSRF> =>
+  readonly csrf$ = () =>
     this.production
       ? this.http.get<CSRF>(`${this.domain}csrf`, { withCredentials: true })
       : of<CSRF>({
@@ -59,7 +59,7 @@ export class AuthenticationService {
   /**
    * Returns current user principal
    * */
-  readonly activeUser = () =>
+  readonly activeUser$ = () =>
     this.production
       ? this.http
           .get<AuthResponse>(`${this.domain}active`, {
@@ -79,7 +79,7 @@ export class AuthenticationService {
               this.toastService.messageErrorNothing(err),
             ),
           )
-      : of();
+      : of('');
 
   readonly logout = (path: string) =>
     this.http
@@ -93,14 +93,10 @@ export class AuthenticationService {
         tap(() => this.router.navigate([`${path}`])),
       );
 
-  readonly login = (obj: {
-    principal: string;
-    password: string;
-  }): Observable<ApiStatus> =>
+  readonly login = (obj: { principal: string; password: string }) =>
     this.production
       ? this.http
           .post<AuthResponse>(`${this.domain}demo`, obj, {
-            headers: { 'content-type': 'application/json' },
             withCredentials: true,
           })
           .pipe(

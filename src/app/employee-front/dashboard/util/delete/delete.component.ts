@@ -8,7 +8,7 @@ import { ToastService } from '@/app/global-service/toast.service';
   template: `
     <div class="w-full mb-2 px-2.5 text-center">
       <h1 class="cx-font-size">
-<!--        Are you sure you want to delete {{ data.name }}?-->
+        <!--        Are you sure you want to delete {{ data.name }}?-->
         Are you sure you want to delete xyz?
       </h1>
     </div>
@@ -65,5 +65,5 @@ export class DeleteComponent {
     //     return of(err.status);
     //   }),
     // );
-  }
+  };
 }

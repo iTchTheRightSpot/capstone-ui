@@ -130,7 +130,9 @@
               type="button"
               class="flex outline-none border-0 text-center cursor-pointer bg-transparent"
             >
-              <p *ngIf="files.length < 1">No file uploaded yet.</p>
+              @if (files.length < 1) {
+                <p>No file uploaded yet.</p>
+              }
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -269,7 +271,7 @@
     </button>
     <button
       type="submit"
-      [asyncButton]="submit()"
+      (click)="submit()"
       [disabled]="
         !form.valid ||
         files.length === 0 ||

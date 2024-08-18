@@ -1,5 +1,8 @@
 import { Routes } from '@angular/router';
-import { ADMIN_SETTING_SHIPPING, ADMIN_SETTING_TAX } from '@/app/employee-front/dashboard/setting/setting.util';
+import {
+  ADMIN_SETTING_SHIPPING,
+  ADMIN_SETTING_TAX,
+} from '@/app/employee-front/dashboard/setting/setting.util';
 
 export const route: Routes = [
   {

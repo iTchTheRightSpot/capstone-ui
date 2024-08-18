@@ -19,7 +19,6 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { MatRadioModule } from '@angular/material/radio';
 import { DynamicTableComponent } from '@/app/employee-front/dashboard/util/dynamictable/dynamic-table.component';
 import {
   catchError,
@@ -30,21 +29,18 @@ import {
   startWith,
   switchMap,
 } from 'rxjs';
-import { MatButtonModule } from '@angular/material/button';
-import { DirectiveModule } from '@/app/directive/directive.module';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Page } from '@/app/global-utils';
 import { CategoryService } from '../category.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ProductService } from '@/app/employee-front/dashboard/product/product.service';
-import { ToastService } from '@/app/shared-comp/toast/toast.service';
-import { MatDialogModule } from '@angular/material/dialog';
 import { CategoryHierarchyComponent } from '@/app/shared-comp/hierarchy/category-hierarchy.component';
 import { toSignal } from '@angular/core/rxjs-interop';
 import {
   mapper,
   ProductMapper,
 } from '@/app/employee-front/dashboard/util/mapper';
+import { ToastService } from '@/app/global-service/toast.service';
 
 @Component({
   selector: 'app-update-category',
@@ -52,12 +48,8 @@ import {
   imports: [
     CommonModule,
     FormsModule,
-    MatRadioModule,
     ReactiveFormsModule,
     DynamicTableComponent,
-    MatButtonModule,
-    DirectiveModule,
-    MatDialogModule,
     CategoryHierarchyComponent,
   ],
   templateUrl: 'update-category.component.html',
@@ -218,7 +210,7 @@ export class UpdateCategoryComponent implements OnInit {
           );
         }),
         catchError((err: HttpErrorResponse) => {
-          this.toastService.toastMessage(err.error.message);
+          // this.toastService.toastMessage(err.error.message);
           return of(err.status);
         }),
       );

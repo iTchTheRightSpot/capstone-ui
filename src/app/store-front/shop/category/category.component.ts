@@ -1,5 +1,13 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { catchError, map, Observable, of, startWith, switchMap, tap } from 'rxjs';
+import {
+  catchError,
+  map,
+  Observable,
+  of,
+  startWith,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { Product } from '@/app/store-front/store-front-utils';
 import { CardComponent } from '@/app/store-front/utils/card/card.component';
 import { FilterComponent } from '@/app/store-front/utils/filter/filter.component';

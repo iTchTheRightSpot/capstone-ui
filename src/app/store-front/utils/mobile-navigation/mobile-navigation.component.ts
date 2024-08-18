@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 import { Category, Link } from '@/app/global-utils';
 import { CategoryHierarchyComponent } from '@/app/shared-comp/hierarchy/category-hierarchy.component';
 
@@ -115,8 +121,8 @@ import { CategoryHierarchyComponent } from '@/app/shared-comp/hierarchy/category
               <button
                 type="button"
                 (click)="
-                toggleNavDisplay((openNavMobile = !openNavMobile), link.path)
-              "
+                  toggleNavDisplay((openNavMobile = !openNavMobile), link.path)
+                "
                 class="w-full flex uppercase text-[var(--app-theme)]"
               >
                 {{ link.name }}

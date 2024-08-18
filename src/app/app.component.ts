@@ -1,13 +1,14 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
-import { catchError, map, of, startWith, tap } from 'rxjs';
+import { catchError, combineLatest, map, of, startWith, tap } from 'rxjs';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ImageModule } from 'primeng/image';
 import { Toast, ToastService } from '@/app/global-service/toast.service';
 import { AuthenticationService } from '@/app/global-service/authentication.service';
+import { ApiStatus } from '@/app/app.util';
 
 @Component({
   selector: 'app-root',
@@ -21,9 +22,9 @@ import { AuthenticationService } from '@/app/global-service/authentication.servi
   ],
   providers: [MessageService],
   template: `
-    @if (csrf$ | async; as csrf) {
-      @switch (csrf.state) {
-        @case ('LOADING') {
+    @if (csrfAndActiveUser$ | async; as status) {
+      @switch (status) {
+        @case (apiStatus.LOADING) {
           <div class="lg-scr h-full p-20 flex justify-center items-center">
             <h1 class="capitalize text-[var(--app-theme-hover)]">loading...</h1>
           </div>
@@ -34,7 +35,7 @@ import { AuthenticationService } from '@/app/global-service/authentication.servi
               <p-progressSpinner
                 aria-label="Loading"
                 styleClass="w-96 h-96 m-0"
-              ></p-progressSpinner>
+              />
               <div
                 class="absolute -translate-x-1/2 -translate-y-1/2 top-2/4 left-2/4 text-xl md:text-2xl flex flex-col justify-center items-center text-center font-extralight text-[var(--app-theme-hover)]"
               >
@@ -44,12 +45,12 @@ import { AuthenticationService } from '@/app/global-service/authentication.servi
             </div>
           </div>
         }
-        @case ('ERROR') {
+        @case (apiStatus.ERROR) {
           <div class="lg-scr p-10 text-3xl text-red-500">
             Please try again later as server is undergoing maintenance
           </div>
         }
-        @case ('LOADED') {
+        @default {
           <p-toast />
           @if (toast$ | async) {}
           <router-outlet />
@@ -65,6 +66,7 @@ export class AppComponent {
   private readonly messageService = inject(MessageService);
 
   protected readonly logo = './assets/images/logo.jpeg';
+  protected readonly apiStatus = ApiStatus;
 
   protected readonly toast$ = this.toastService.toast$.pipe(
     tap((obj) => {
@@ -89,9 +91,18 @@ export class AppComponent {
   /**
    * onload of application, retrieve CSRF token
    * */
-  protected readonly csrf$ = this.authService.csrf().pipe(
-    map(() => ({ state: 'LOADED' })),
-    startWith({ state: 'LOADING' }),
-    catchError(() => of({ state: 'ERROR' })),
+  protected readonly csrf$ = this.authService.csrf$().pipe(
+    map(() => ApiStatus.LOADED),
+    startWith(ApiStatus.LOADING),
+    catchError(() => of(ApiStatus.ERROR)),
+  );
+
+  protected readonly csrfAndActiveUser$ = combineLatest([
+    this.authService.csrf$(),
+    this.authService.activeUser$(),
+  ]).pipe(
+    map(() => ApiStatus.LOADED),
+    startWith(ApiStatus.LOADING),
+    catchError(() => of(ApiStatus.ERROR)),
   );
 }

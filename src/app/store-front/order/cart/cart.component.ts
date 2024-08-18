@@ -1,11 +1,24 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  signal,
+} from '@angular/core';
 import { AsyncPipe, NgClass } from '@angular/common';
 import { CardComponent } from '@/app/store-front/utils/card/card.component';
 import { CartService } from './cart.service';
 import { FooterService } from '@/app/store-front/utils/footer/footer.service';
 import { Router } from '@angular/router';
 import { HomeService } from '@/app/store-front/home/home.service';
-import { catchError, combineLatest, map, of, startWith, switchMap, timer } from 'rxjs';
+import {
+  catchError,
+  combineLatest,
+  map,
+  of,
+  startWith,
+  switchMap,
+  timer,
+} from 'rxjs';
 import { IS_NUMERIC, SarreCurrency } from '@/app/global-utils';
 
 @Component({

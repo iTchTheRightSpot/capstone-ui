@@ -110,7 +110,7 @@
                 <button
                   type="submit"
                   [disabled]="form.invalid"
-                  [asyncButton]="addToCart()"
+                  (click)="addToCart()"
                   class="w-full p-3 uppercase border border-black hover:bg-black hover:text-white"
                 >
                   add to cart

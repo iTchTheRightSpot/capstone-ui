@@ -4,8 +4,6 @@ import {
   signal,
   WritableSignal,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MatDialogRef } from '@angular/material/dialog';
 import {
   FormBuilder,
   FormControl,
@@ -13,14 +11,13 @@ import {
   Validators,
 } from '@angular/forms';
 import { SettingService } from '@/app/employee-front/dashboard/setting/setting.service';
-import { DirectiveModule } from '@/app/directive/directive.module';
 import { catchError, Observable, of, tap } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-create-shipping',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, DirectiveModule],
+  imports: [ReactiveFormsModule],
   template: `
     <div class="p-3">
       <div class="w-full flex justify-center">
@@ -96,7 +93,7 @@ import { HttpErrorResponse } from '@angular/common/http';
                 ? 'var(--app-theme-hover)'
                 : 'var(--app-theme)'
             }"
-            [asyncButton]="create()"
+            (click)="create()"
           >
             create
           </button>
@@ -110,7 +107,7 @@ export class CreateShippingComponent {
   readonly error: WritableSignal<string>;
 
   constructor(
-    private readonly dialogRef: MatDialogRef<CreateShippingComponent>,
+    // private readonly dialogRef: MatDialogRef<CreateShippingComponent>,
     private readonly fb: FormBuilder,
     private readonly service: SettingService,
   ) {
@@ -126,9 +123,7 @@ export class CreateShippingComponent {
   /**
    * Closes {@link CreateShippingComponent}
    * */
-  cancel(): void {
-    this.dialogRef.close();
-  }
+  cancel(): void {}
 
   /**
    * Initiates a request to the server to create a new

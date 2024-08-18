@@ -7,8 +7,7 @@ import { Router, RouterLink } from '@angular/router';
 import { TableContent } from '@/app/employee-front/admin-front.util';
 import { catchError, map, of, switchMap } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
-import { DeleteComponent } from '@/app/employee-front/dashboard/util/delete/delete.component';
-import { ToastService } from '@/app/shared-comp/toast/toast.service';
+import { ToastService } from '@/app/global-service/toast.service';
 
 interface CategoryResponseMapper {
   index: number;
@@ -54,7 +53,7 @@ interface CategoryResponseMapper {
             [tHead]="tHead"
             [data]="data"
             (eventEmitter)="infoFromTableComponent($event)"
-          ></app-dynamic-table>
+          />
         </div>
       }
     </div>
@@ -66,7 +65,6 @@ export class CategoryImplComponent {
   private readonly productService = inject(ProductService);
   private readonly toastService = inject(ToastService);
   private readonly router = inject(Router);
-  private readonly dialog = inject(MatDialog);
 
   readonly data$ = this.categoryService.categories$.pipe(
     map((arr) =>
@@ -112,19 +110,19 @@ export class CategoryImplComponent {
           );
 
         // Open modal
-        this.dialog.open(DeleteComponent, {
-          width: '500px',
-          maxWidth: '100%',
-          height: 'fit-content',
-          data: {
-            name: content.data.name,
-            asyncButton: obs,
-          },
-        });
+        // this.dialog.open(DeleteComponent, {
+        //   width: '500px',
+        //   maxWidth: '100%',
+        //   height: 'fit-content',
+        //   data: {
+        //     name: content.data.name,
+        //     asyncButton: obs,
+        //   },
+        // });
 
         break;
       default:
-        this.toastService.toastMessage('invalid key chosen');
+        console.log('invalid key chosen');
     }
   }
 }

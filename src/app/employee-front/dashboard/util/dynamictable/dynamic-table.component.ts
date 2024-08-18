@@ -1,6 +1,15 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 import { NgSwitch } from '@angular/common';
-import { PageChange, TableContent } from '@/app/employee-front/admin-front.util';
+import {
+  PageChange,
+  TableContent,
+} from '@/app/employee-front/admin-front.util';
 import { Page } from '@/app/global-utils';
 import { PaginatorComponent } from '@/app/shared-comp/paginator/paginator.component';
 

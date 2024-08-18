@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { SizeInventory } from '@/app/employee-front/admin-front.util';
 import { catchError, Observable, of, switchMap } from 'rxjs';
 import {
@@ -25,13 +25,13 @@ import { ToastService } from '@/app/global-service/toast.service';
   selector: 'app-new-product',
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     SizeInventoryComponent,
     ReactiveFormsModule,
     EditorModule,
     CategoryHierarchyComponent,
     RadioButtonModule,
+    AsyncPipe,
   ],
   templateUrl: './new-product.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -192,9 +192,9 @@ export class NewProductComponent {
             this.productService.allProducts(0, 20, currency).pipe(
               switchMap(() => of(status)),
               catchError((err: HttpErrorResponse) => {
-                this.toastService.toastMessage(
-                  err.error ? err.error.message : err.message,
-                );
+                // this.toastService.toastMessage(
+                //   err.error ? err.error.message : err.message,
+                // );
                 return of(err.status);
               }),
             ),
@@ -202,9 +202,9 @@ export class NewProductComponent {
         );
       }),
       catchError((err: HttpErrorResponse) => {
-        this.toastService.toastMessage(
-          err.error ? err.error.message : err.message,
-        );
+        // this.toastService.toastMessage(
+        //   err.error ? err.error.message : err.message,
+        // );
         return of(err.status);
       }),
     );

@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, inject, Input, Output, Renderer2 } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  Output,
+  Renderer2,
+} from '@angular/core';
 import { RouterLinkActive } from '@angular/router';
 import { UtilService } from '@/app/global-service/util.service';
 
@@ -42,11 +50,11 @@ import { UtilService } from '@/app/global-service/util.service';
                 [attr.data-page-number]="num"
                 aria-label="button number"
                 [style]="{
-                'background-color':
-                  num === currentPage ? 'var(--app-theme)' : ''
-              }"
+                  'background-color':
+                    num === currentPage ? 'var(--app-theme)' : ''
+                }"
                 class="relative block rounded-full bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-gray-200"
-              >{{ num + 1 }}</a
+                >{{ num + 1 }}</a
               >
             }
           </li>

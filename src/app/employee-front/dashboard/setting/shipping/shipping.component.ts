@@ -1,19 +1,26 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { map, Observable } from 'rxjs';
 import { DynamicTableComponent } from '../../util/dynamictable/dynamic-table.component';
 import { TableContent } from '@/app/employee-front/admin-front.util';
 import { DeleteComponent } from '@/app/employee-front/dashboard/util/delete/delete.component';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { SettingService } from '../setting.service';
 import { UpdateShippingComponent } from './update-shipping.component';
 import { ShipSettingMapper } from '../setting.util';
-import { CreateShippingComponent } from '@/app/employee-front/dashboard/setting/shipping/create-shipping.component';
+
+interface CxShipping {
+  index: number;
+  id: number;
+  name: string;
+  usd: number;
+  ngn: number;
+  delete: string;
+}
 
 @Component({
   selector: 'app-shipping',
   standalone: true,
-  imports: [CommonModule, DynamicTableComponent, MatDialogModule],
+  imports: [DynamicTableComponent, AsyncPipe],
   template: `
     <div class="flex flex-col h-full py-0">
       <div class="flex py-2.5 px-0 align-center">
@@ -49,7 +56,7 @@ import { CreateShippingComponent } from '@/app/employee-front/dashboard/setting/
           (eventEmitter)="infoFromTableComponent($event)"
           [tHead]="thead"
           [data]="ship"
-        ></app-dynamic-table>
+        />
       }
     </div>
   `,
@@ -57,7 +64,6 @@ import { CreateShippingComponent } from '@/app/employee-front/dashboard/setting/
 })
 export class ShippingComponent {
   private readonly service = inject(SettingService);
-  private readonly dialog = inject(MatDialog);
 
   readonly thead: Array<keyof CxShipping> = [
     'index',
@@ -100,45 +106,36 @@ export class ShippingComponent {
   }
 
   openEditComponent(ship: CxShipping): void {
-    this.dialog.open(UpdateShippingComponent, {
-      height: '400px',
-      width: '600px',
-      maxWidth: '100%',
-      data: {
-        country: ship.name,
-        shipping_id: ship.id,
-        ngn_price: ship.ngn,
-        usd_price: ship.usd,
-      },
-    });
+    // this.dialog.open(UpdateShippingComponent, {
+    //   height: '400px',
+    //   width: '600px',
+    //   maxWidth: '100%',
+    //   data: {
+    //     country: ship.name,
+    //     shipping_id: ship.id,
+    //     ngn_price: ship.ngn,
+    //     usd_price: ship.usd,
+    //   },
+    // });
   }
 
   openDeleteComponent(ship: CxShipping): void {
-    this.dialog.open(DeleteComponent, {
-      width: '500px',
-      maxWidth: '100%',
-      height: 'fit-content',
-      data: {
-        name: ship.name,
-        asyncButton: this.service.delete(ship.id),
-      },
-    });
+    // this.dialog.open(DeleteComponent, {
+    //   width: '500px',
+    //   maxWidth: '100%',
+    //   height: 'fit-content',
+    //   data: {
+    //     name: ship.name,
+    //     asyncButton: this.service.delete(ship.id),
+    //   },
+    // });
   }
 
   openCreateShippingComponent(): void {
-    this.dialog.open(CreateShippingComponent, {
-      width: '500px',
-      maxWidth: '100%',
-      height: 'fit-content',
-    });
+    // this.dialog.open(CreateShippingComponent, {
+    //   width: '500px',
+    //   maxWidth: '100%',
+    //   height: 'fit-content',
+    // });
   }
-}
-
-interface CxShipping {
-  index: number;
-  id: number;
-  name: string;
-  usd: number;
-  ngn: number;
-  delete: string;
 }

@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  HostListener,
+  Input,
+  Output,
+} from '@angular/core';
 import { NgStyle } from '@angular/common';
 import { SearchComponent } from '../search/search.component';
 import { MobileNavigationComponent } from '../mobile-navigation/mobile-navigation.component';

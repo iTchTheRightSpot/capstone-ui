@@ -116,7 +116,7 @@
                   <app-hierarchy
                     [categories]="(hierarchy$ | async) || []"
                     (emitter)="categoryClicked($event)"
-                  ></app-hierarchy>
+                  />
                 </div>
               }
             </div>
@@ -141,11 +141,7 @@
               <h3 class="capitalize">
                 <span class="text-red-500">*</span> description
               </h3>
-              <ckeditor
-                [editor]="config"
-                formControlName="desc"
-                data="<p>Hello, world!</p>"
-              ></ckeditor>
+              todo render text editor
             </div>
           </div>
 
@@ -187,7 +183,7 @@
         <button
           type="submit"
           [disabled]="!form.valid"
-          [asyncButton]="onSubmit()"
+          (click)="onSubmit()"
           [style]="{
             'background-color': form.valid
               ? 'var(--app-theme-hover)'
@@ -244,7 +240,7 @@
                 [tHead]="thead"
                 [data]="variant.data"
                 (eventEmitter)="onDeleteOrUpdateVariant($event)"
-              ></app-dynamic-table>
+              />
             }
           }
         }
